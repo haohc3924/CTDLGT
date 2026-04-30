@@ -124,6 +124,112 @@ public:
         }
         cout << "-------------------------\n" << endl;
     }
+    // ======================
+// Xóa từ
+// ======================
+void deleteWord(string en) {
+    if (en.empty()) {
+        cout << "Tu khong hop le!\n";
+        return;
+    }
+
+    int index = hashFunction(en);
+    Node* current = table[index];
+    Node* prev = nullptr;
+
+    while (current != nullptr) {
+        if (current->data.english == en) {
+
+            // Xóa node đầu
+            if (prev == nullptr) {
+                table[index] = current->next;
+            }
+            // Xóa giữa / cuối
+            else {
+                prev->next = current->next;
+            }
+
+            delete current;
+            cout << " [OK] Da xoa tu: " << en << endl;
+            return;
+        }
+
+        prev = current;
+        current = current->next;
+    }
+
+    cout << " [!] Khong tim thay tu: " << en << endl;
+}
+// ======================
+// Cập nhật từ
+// ======================
+void updateWord(string en) {
+    if (en.empty()) {
+        cout << "Tu khong hop le!\n";
+        return;
+    }
+
+    int index = hashFunction(en);
+    Node* current = table[index];
+
+    while (current != nullptr) {
+        if (current->data.english == en) {
+
+            cout << "Tim thay tu!\n";
+            cout << "1. Sua nghia\n";
+            cout << "2. Sua ca tu\n";
+            cout << "Chon: ";
+
+            int choice;
+            cin >> choice;
+            cin.ignore();
+
+            // ===== CASE 1: SỬA NGHĨA =====
+            if (choice == 1) {
+                string newMeaning;
+                cout << "Nhap nghia moi: ";
+                getline(cin, newMeaning);
+
+                current->data.vietnamese = newMeaning;
+                cout << " [OK] Cap nhat nghia thanh cong!\n";
+            }
+
+            // ===== CASE 2: SỬA CẢ TỪ =====
+            else if (choice == 2) {
+                string newWord, newMeaning;
+
+                cout << "Nhap tu moi: ";
+                getline(cin, newWord);
+                cout << "Nhap nghia moi: ";
+                getline(cin, newMeaning);
+
+                // kiểm tra trùng
+                int newIndex = hashFunction(newWord);
+                Node* check = table[newIndex];
+
+                while (check != nullptr) {
+                    if (check->data.english == newWord) {
+                        cout << " [!] Tu moi da ton tai!\n";
+                        return;
+                    }
+                    check = check->next;
+                }
+
+                // xóa cũ + thêm mới
+                deleteWord(en);
+                insert(newWord, newMeaning);
+
+                cout << " [OK] Cap nhat tu thanh cong!\n";
+            }
+
+            return;
+        }
+
+        current = current->next;
+    }
+
+    cout << " [!] Khong tim thay tu!\n";
+}
 };
 
 // ======================
