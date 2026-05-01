@@ -302,6 +302,61 @@ void updateWord(string en) {
 
     cout << " [!] Khong tim thay tu!\n";
 }
+// ======================
+// Hiển thị tất cả thuật ngữ trong từ điển
+// ======================
+void displayAll() {
+    cout << "\n--- DANH SACH TAT CA THUAT NGU ---" << endl;
+    bool found = false;
+    int count = 0;
+    for (int i = 0; i < SIZE; i++) {
+        Node* current = table[i];
+        while (current != nullptr) {
+            count++;
+            found = true;
+            cout << count << ". "
+                << current->data.english << " : "
+                << current->data.vietnamese << endl;
+            current = current->next;
+        }
+    }
+    if (!found) {
+        cout << "Tu dien dang rong." << endl;
+    }
+    cout << "----------------------------------\n" << endl;
+}
+
+// ======================
+// Hiển thị thuật ngữ theo nhóm chữ cái đầu
+// ======================
+void displayByGroup(char group) {
+    group = tolower(group);         
+    cout << "\n--- DANH SACH THUAT NGU THUOC NHOM '"
+        << group << "' ---" << endl;
+    bool found = false;
+    int count = 0;
+    for (int i = 0; i < SIZE; i++) {
+        Node* current = table[i];
+        while (current != nullptr) {
+            if (!current->data.english.empty()) {
+                char firstChar = tolower(current->data.english[0]);
+                if (firstChar == group) {
+                    count++;
+                    found = true;
+                    cout << count << ". "
+                        << current->data.english << " : "
+                        << current->data.vietnamese << endl;
+                }
+            }
+            current = current->next;
+        }
+    }
+    if (!found) {
+        cout << "Khong co thuat ngu nao thuoc nhom '"
+            << group << "'." << endl;
+    }
+    cout << "----------------------------------\n" << endl;
+}
 };
 
 // ======================
